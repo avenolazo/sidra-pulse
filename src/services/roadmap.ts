@@ -75,7 +75,7 @@ export class RoadmapTracker {
             }
 
             await this.notifier.sendCustomEmbed(
-              `🔄 Sidra Ecosystem Update: ${new URL(url).hostname}`,
+              `Sidra Ecosystem Update: ${new URL(url).hostname}`,
               analysis,
               3447003 // Decimal for blue/cyan milestone color (#3498DB)
             );
@@ -90,7 +90,7 @@ export class RoadmapTracker {
             }
 
             await this.notifier.sendCustomEmbed(
-              `🌱 Initialized Roadmap Tracker: ${new URL(url).hostname}`,
+              `Initialized Roadmap Tracker: ${new URL(url).hostname}`,
               initialSummary,
               3066993 // Decimal for emerald/green (#2ECC71)
             );
