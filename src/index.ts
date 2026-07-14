@@ -49,6 +49,12 @@ class ScraperPipeline {
         try {
           const scraped = await scraper.scrape(this.config.nitterInstances);
           
+          // Reset failure counter on success
+          if (!state.consecutiveFailures) {
+            state.consecutiveFailures = {};
+          }
+          state.consecutiveFailures[scraper.name] = 0;
+
           // Collect all updates to populate the website feed
           allScrapedUpdates.push(...scraped);
 
@@ -68,6 +74,20 @@ class ScraperPipeline {
           }
         } catch (scraperError) {
           logger.error(`Error executing scraper: ${scraper.name}`, scraperError);
+
+          // Increment failure counter persistently
+          if (!state.consecutiveFailures) {
+            state.consecutiveFailures = {};
+          }
+          const failures = (state.consecutiveFailures[scraper.name] || 0) + 1;
+          state.consecutiveFailures[scraper.name] = failures;
+
+          // Dispatch developer alert to Discord if threshold is met
+          if (failures === 5) {
+            logger.warn(`Scraper ${scraper.name} has failed 5 consecutive times. Sending alert to Discord.`);
+            const errorMsg = scraperError instanceof Error ? scraperError.message : String(scraperError);
+            await this.notifier.sendErrorAlert(scraper.name, errorMsg);
+          }
         }
       }
 

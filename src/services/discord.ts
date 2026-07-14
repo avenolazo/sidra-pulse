@@ -117,4 +117,38 @@ export class DiscordNotifier {
   private truncateString(str: string, max: number): string {
     return str.length > max ? `${str.substring(0, max - 3)}...` : str;
   }
+
+  /**
+   * Dispatches a warning alert message to the Discord webhook notifying about a scraper error.
+   */
+  async sendErrorAlert(scraperName: string, errorMsg: string): Promise<void> {
+    if (!this.webhookUrl) {
+      logger.warn(`No Discord Webhook configured. Skipping error alert for scraper: ${scraperName}`);
+      return;
+    }
+
+    const payload = {
+      embeds: [
+        {
+          title: `⚠️ Scraper Failure Alert: ${scraperName}`,
+          description: `The scraper provider **${scraperName}** has failed multiple times consecutively.\n\n**Error Log**:\n\`\`\`\n${this.truncateString(errorMsg, 800)}\n\`\`\``,
+          color: 16731215, // Decimal equivalent for #FF5252 (Red Warning)
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'Sidra Pulse Developer Alert',
+          },
+        },
+      ],
+    };
+
+    try {
+      await axios.post(this.webhookUrl, payload, {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000,
+      });
+      logger.info(`Developer failure alert sent for scraper: ${scraperName}`);
+    } catch (error) {
+      logger.error(`Failed to dispatch error alert to Discord for scraper: ${scraperName}`, error);
+    }
+  }
 }

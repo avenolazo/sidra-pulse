@@ -53,6 +53,11 @@ export interface ScraperState {
    * Timestamp of the last run.
    */
   lastRunTimestamp: string;
+
+  /**
+   * Track consecutive execution failures per source name.
+   */
+  consecutiveFailures?: Record<string, number>;
 }
 
 /**

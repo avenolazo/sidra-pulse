@@ -65,6 +65,16 @@ export class AggregatorScraper implements ScraperProvider {
           // Strip HTML tags from description if present
           const cleanDescription = description.replace(/<[^>]*>/g, '').trim();
 
+          // Semantic Filtering Checklist to eliminate unrelated articles (e.g. Sidra Capital/Medicine)
+          const combinedText = `${title} ${cleanDescription}`.toLowerCase();
+          const keywords = ['sda', 'token', 'blockchain', 'chain', 'node', 'validator', 'mainnet', 'testnet', 'kyc', 'crypto', 'web3'];
+          const isRelevant = keywords.some((keyword) => combinedText.includes(keyword));
+
+          if (!isRelevant) {
+            logger.debug(`Skipping RSS news article due to semantic filtering: ${title}`);
+            return;
+          }
+
           updates.push({
             id: guid,
             title,

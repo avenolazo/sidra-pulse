@@ -51,6 +51,9 @@ export class StateManager {
       if (!parsed.lastRunTimestamp) {
         parsed.lastRunTimestamp = new Date(0).toISOString();
       }
+      if (!parsed.consecutiveFailures) {
+        parsed.consecutiveFailures = {};
+      }
       return parsed;
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
@@ -59,6 +62,7 @@ export class StateManager {
           processedIds: {},
           updates: [],
           lastRunTimestamp: new Date(0).toISOString(),
+          consecutiveFailures: {},
         };
       }
       logger.error('Failed to parse state file. Returning empty state fallback.', error);
@@ -66,6 +70,7 @@ export class StateManager {
         processedIds: {},
         updates: [],
         lastRunTimestamp: new Date(0).toISOString(),
+        consecutiveFailures: {},
       };
     }
   }

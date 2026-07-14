@@ -18,8 +18,10 @@ export default function App() {
   const [selectedSource, setSelectedSource] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'latest' | 'oldest'>('latest');
   const [expandedIds, setExpandedIds] = useState<Record<string, boolean>>({});
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch('/state.json')
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch state');
@@ -33,6 +35,9 @@ export default function App() {
       })
       .catch((err) => {
         console.error('Failed to dynamically fetch state.json:', err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
@@ -171,7 +176,23 @@ export default function App() {
         {/* Updates List */}
         <main className="space-y-16">
           <AnimatePresence mode="popLayout">
-            {sortedUpdates.length > 0 ? (
+            {isLoading ? (
+              // Shimmering skeleton loader cards
+              Array.from({ length: 3 }).map((_, index) => (
+                <div key={index} className="flex flex-col gap-4 animate-pulse">
+                  <div className="flex items-center justify-between">
+                    <div className="w-16 h-3 bg-zinc-900 rounded" />
+                    <div className="w-28 h-3 bg-zinc-900 rounded" />
+                  </div>
+                  <div className="w-3/4 h-5 bg-zinc-800 rounded" />
+                  <div className="space-y-2.5">
+                    <div className="w-full h-4 bg-zinc-900 rounded" />
+                    <div className="w-5/6 h-4 bg-zinc-900 rounded" />
+                  </div>
+                  <div className="w-10 h-3 bg-zinc-900 rounded mt-1" />
+                </div>
+              ))
+            ) : sortedUpdates.length > 0 ? (
               sortedUpdates.map((update, index) => {
                 const isExpanded = !!expandedIds[update.id];
                 const shouldTruncate = update.content.length > 240;
