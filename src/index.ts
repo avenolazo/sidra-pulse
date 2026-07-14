@@ -1,4 +1,5 @@
 import cron from 'node-cron';
+import crypto from 'crypto';
 import { getAppConfig } from './config.js';
 import { logger } from './services/logger.js';
 import { StateManager } from './services/state.js';
@@ -10,12 +11,8 @@ import { TelegramScraper } from './scrapers/telegram.js';
 import { GitHubScraper } from './scrapers/github.js';
 import { ScrapedUpdate, ScraperProvider } from './types.js';
 
-/**
- * Main orchestrator class for the Sidra Chain scraper pipeline.
- *
- * Why: Coordinates state loading, scraper executions, state persistence,
- * and notification dispatching in a unified workflow.
- */
+const MAX_PER_SOURCE_FIRST_RUN = 5;
+
 class ScraperPipeline {
   private config = getAppConfig();
   private stateManager = new StateManager(this.config.stateFilePath);
@@ -29,12 +26,6 @@ class ScraperPipeline {
   ];
   private isRunning = false;
 
-  /**
-   * Runs the entire scraping and notification pipeline.
-   *
-   * Why: Wrapped in a try/catch block with explicit concurrency prevention
-   * to avoid overlapping execution if scraping takes longer than the interval.
-   */
   async run(): Promise<void> {
     if (this.isRunning) {
       logger.warn('Scraper pipeline is already running. Skipping this iteration to prevent overlap.');
@@ -52,7 +43,6 @@ class ScraperPipeline {
         try {
           const scraped = await scraper.scrape(this.config.nitterInstances);
           
-          // Reset failure counter on success
           if (!state.consecutiveFailures) {
             state.consecutiveFailures = {};
           }
@@ -64,10 +54,20 @@ class ScraperPipeline {
 
           if (newForScraper.length > 0) {
             logger.info(`Found ${newForScraper.length} new updates from source: ${scraper.name}`);
-            
-            for (const update of newForScraper) {
-              newUpdatesForDiscord.push(update);
-              this.stateManager.markAsProcessed(state, scraper.name, update.id);
+
+            const isFirstRun = state.lastRunTimestamp === new Date(0).toISOString();
+            const cap = isFirstRun ? Math.min(newForScraper.length, MAX_PER_SOURCE_FIRST_RUN) : newForScraper.length;
+
+            for (let i = 0; i < cap; i++) {
+              newUpdatesForDiscord.push(newForScraper[i]);
+              this.stateManager.markAsProcessed(state, scraper.name, newForScraper[i].id);
+            }
+
+            if (cap < newForScraper.length) {
+              logger.info(`First-run throttle: capped ${scraper.name} from ${newForScraper.length} to ${cap} notifications.`);
+              for (let i = cap; i < newForScraper.length; i++) {
+                this.stateManager.markAsProcessed(state, scraper.name, newForScraper[i].id);
+              }
             }
           } else {
             logger.debug(`No new updates found for source: ${scraper.name}`);
@@ -75,14 +75,12 @@ class ScraperPipeline {
         } catch (scraperError) {
           logger.error(`Error executing scraper: ${scraper.name}`, scraperError);
 
-          // Increment failure counter persistently
           if (!state.consecutiveFailures) {
             state.consecutiveFailures = {};
           }
           const failures = (state.consecutiveFailures[scraper.name] || 0) + 1;
           state.consecutiveFailures[scraper.name] = failures;
 
-          // Dispatch developer alert to Discord if threshold is met
           if (failures === 5) {
             logger.warn(`Scraper ${scraper.name} has failed 5 consecutive times. Sending alert to Discord.`);
             const errorMsg = scraperError instanceof Error ? scraperError.message : String(scraperError);
@@ -91,21 +89,21 @@ class ScraperPipeline {
         }
       }
 
-      // Run roadmap and capability update check
+      const deduplicated = this.deduplicate(newUpdatesForDiscord);
+      if (deduplicated.length < newUpdatesForDiscord.length) {
+        logger.info(`Cross-source dedup removed ${newUpdatesForDiscord.length - deduplicated.length} duplicates.`);
+      }
+
       await this.roadmapTracker.checkUpdates(state);
 
-      // Update global run timestamp
       state.lastRunTimestamp = new Date().toISOString();
 
-      // Save state to disk
       await this.stateManager.save(state);
 
-      if (newUpdatesForDiscord.length > 0) {
-        // Chronological order sorting for notifications
-        newUpdatesForDiscord.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+      if (deduplicated.length > 0) {
+        deduplicated.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
         
-        // Dispatch notifications
-        await this.notifier.sendUpdates(newUpdatesForDiscord);
+        await this.notifier.sendUpdates(deduplicated);
       } else {
         logger.info('Pipeline finished. No new updates to notify.');
       }
@@ -116,12 +114,17 @@ class ScraperPipeline {
     }
   }
 
-  /**
-   * Initializes the scheduled cron jobs or executes a single run depending on config.
-   *
-   * Why: Supports running as a persistent daemon in development/local environments
-   * and as a stateless, one-shot scheduler under CI/CD (GitHub Actions).
-   */
+  private deduplicate(updates: ScrapedUpdate[]): ScrapedUpdate[] {
+    const seenHashes = new Set<string>();
+    return updates.filter((update) => {
+      const normalized = `${update.title.toLowerCase().trim()}|${update.content.toLowerCase().trim().slice(0, 200)}`;
+      const hash = crypto.createHash('md5').update(normalized).digest('hex');
+      if (seenHashes.has(hash)) return false;
+      seenHashes.add(hash);
+      return true;
+    });
+  }
+
   start(): void {
     const isOneShot = process.env.RUN_ONCE === 'true' || process.env.GITHUB_ACTIONS === 'true';
 
@@ -151,19 +154,16 @@ class ScraperPipeline {
     logger.info(`State File: "${this.config.stateFilePath}"`);
     logger.info(`Discord Webhook Status: ${this.config.discordWebhookUrl ? 'Configured' : 'NOT Configured (Dry Run Mode)'}`);
 
-    // Schedule cron job
     const task = cron.schedule(interval, async () => {
       logger.info('Triggered scheduled execution.');
       await this.run();
     });
 
-    // Run once on startup immediately to verify credentials and parsing
     logger.info('Running startup pipeline validation...');
     this.run().catch((err) => {
       logger.error('Startup validation run encountered an error', err);
     });
 
-    // Register shutdown hooks for cleanup
     const shutdown = (): void => {
       logger.info('Received shutdown signal. Stopping scheduled tasks...');
       task.stop();
@@ -176,6 +176,5 @@ class ScraperPipeline {
   }
 }
 
-// Start the daemon
 const pipeline = new ScraperPipeline();
 pipeline.start();
