@@ -13,11 +13,13 @@
       "CBMiTkFVX3lxTE1pMjY5QzVZQzZ4OGstX1pQaXdmU3hlYXU1MUtkdUdYSWhOLUhSVFp3OUR4QTJOSTRpdHN1eVZNbS1nbzdoRVczSFBXRDcwQQ"
     ]
   },
-  "lastRunTimestamp": "2026-07-14T01:53:08.176Z",
+  "lastRunTimestamp": "2026-07-14T01:55:26.825Z",
   "consecutiveFailures": {
-    "nitter": 1,
+    "nitter": 2,
     "aggregator": 0,
-    "telegram": 12
+    "telegram": 13
   },
-  "roadmapHtml": {}
+  "roadmapHtml": {
+    "https://sidrachain.com": "Sidra Chain\nA verified-human financial network\nOne verified human. One account.\nSidra is a verified-human financial network — claim daily rewards, hold a real ledger balance, and settle on a self-hosted chain. No seed phrases. No silent failures.\nGet started\nI already have an account\nProof of personhood\nPassive liveness + KYCPort verification. One human, one account — sybil-resistant by design.\nA real ledger\nDouble-entry balances are the source of truth. Settlement on a self-hosted EVM chain — your balance is never a silent zero.\nSmart-account wallet\nERC-4337 accounts: no seed phrase, gasless transactions, social recovery via guardians.\nTokenized assets\nPermissioned real-world assets on the L3 layer, with on-chain identity and compliance built in."
+  }
 }
