@@ -10,14 +10,64 @@
       "CBMiogFBVV95cUxNcWp1cktvRGNFdUY0Vklld2VHX2c2X0Q2MVNEWGx4enROR3JiOHZQSnZyOFhTcVZ5bWhucl9BQy1Fdy1lODQxRE8wZjNCcDFXZ2JPU2t5RHp3NW5OX1YxNFhDcHIyUE05Vm9Sa00tdFVKRkpSdFZHNUYzU1p1WHI5RFJ1Y3ZwMmRmZk9sb3VMWENjUG5oLWxwdFY0NERjUjVSTXc",
       "CBMiXEFVX3lxTE1nb2RyLUdGcmxVUHFxcVlJS2V2NENRUkVXMWhUQ0pyemFQMk5hU1lVZDV6eXhHWmVobU93azNSRm44UHV2bG1wYlpnSjVBYlNWWWoxV2ktajVaSE42",
       "CBMiY0FVX3lxTE83aG5TTjhwR1RkSHliSE0yLUNtbFZnaVE0X0lFa0VsYlRXRER0ZTdhWmV0YUFObHgxLUZNWnFaS3Zoa0tKQVM2VFpZOWJKZl9YSmJ4WEJoakdmZEtFb2xzQ0JEdw",
-      "CBMiTkFVX3lxTE1pMjY5QzVZQzZ4OGstX1pQaXdmU3hlYXU1MUtkdUdYSWhOLUhSVFp3OUR4QTJOSTRpdHN1eVZNbS1nbzdoRVczSFBXRDcwQQ"
+      "CBMiTkFVX3lxTE1pMjY5QzVZQzZ4OGstX1pQaXdmU3hlYXU1MUtkdUdYSWhOLUhSVFp3OUR4QTJOSTRpdHN1eVZNbS1nbzdoRVczSFBXRDcwQQ",
+      "CBMiSkFVX3lxTE5lRlA3cTRWdDFHVmZyd00xeWV6R0c1bEMtOTlVQzYzR1J2TkZreGw5Qm1vdVBFNXJGYVFnajdlNDZRWWFsTkQtNHFn"
+    ],
+    "nitter": [
+      "2062664079672496476",
+      "2059668748320055493",
+      "2050708701141500298",
+      "2034980701011857702",
+      "2025678974316163289",
+      "2025190551256006817",
+      "2024941659394638145",
+      "2023859214855368720",
+      "2023827529199743309",
+      "2023573588322742560",
+      "2023573530613334175",
+      "2023573464091635800",
+      "2023573404645753278",
+      "2023573353257222191",
+      "2023573256704233923",
+      "2023572699654525238",
+      "2023572623095972104",
+      "2023572543429333024",
+      "2023572489796747370",
+      "2023572424659275943"
+    ],
+    "telegram": [
+      "https://telegram.me/sidrachaincoin/265",
+      "https://telegram.me/sidrachaincoin/268",
+      "https://telegram.me/sidrachaincoin/270",
+      "https://telegram.me/sidrachaincoin/271",
+      "https://telegram.me/sidrachaincoin/273",
+      "https://telegram.me/sidrachaincoin/276",
+      "https://telegram.me/sidrachaincoin/277",
+      "https://telegram.me/sidrachaincoin/280",
+      "https://telegram.me/sidrachaincoin/281",
+      "https://telegram.me/sidrachaincoin/282",
+      "https://telegram.me/sidrachaincoin/283",
+      "https://telegram.me/sidrachaincoin/284",
+      "https://telegram.me/sidrachaincoin/285",
+      "https://telegram.me/sidrachaincoin/286",
+      "https://telegram.me/sidrachaincoin/287"
+    ],
+    "github": [
+      "gh_commit_3d6fe0a7c5f47fcf2647b8498cf0bec10aaa0134",
+      "gh_commit_52334b0abb07d78ebb52c3fe49456d1b2a6a5caa",
+      "gh_commit_de346ec580c67d974c4904fd9a64d25468d6a514",
+      "gh_commit_b76590b71132edb772ddcb4758677ec83dcda190",
+      "gh_commit_60752f6680fe7c00a56b2869b9909c2fd7a34439"
     ]
   },
-  "lastRunTimestamp": "2026-07-14T01:55:26.825Z",
+  "lastRunTimestamp": "2026-07-14T12:53:16.523Z",
   "consecutiveFailures": {
-    "nitter": 2,
+    "nitter": 0,
     "aggregator": 0,
-    "telegram": 13
+    "telegram": 0,
+    "github": 0
   },
-  "roadmapHtml": {}
+  "roadmapHtml": {
+    "https://sidrachain.com": "Sidra Chain\nA verified-human financial network\nOne verified human. One account.\nSidra is a verified-human financial network — claim daily rewards, hold a real ledger balance, and settle on a self-hosted chain. No seed phrases. No silent failures.\nGet started\nI already have an account\nProof of personhood\nPassive liveness + KYCPort verification. One human, one account — sybil-resistant by design.\nA real ledger\nDouble-entry balances are the source of truth. Settlement on a self-hosted EVM chain — your balance is never a silent zero.\nSmart-account wallet\nERC-4337 accounts: no seed phrase, gasless transactions, social recovery via guardians.\nTokenized assets\nPermissioned real-world assets on the L3 layer, with on-chain identity and compliance built in."
+  }
 }
