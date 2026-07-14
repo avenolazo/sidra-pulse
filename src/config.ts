@@ -77,7 +77,7 @@ export function getAppConfig(): AppConfig {
 
   const telegramChannel = process.env.TELEGRAM_CHANNEL || 'sidrachaincoin';
 
-  const rawRoadmapUrls = process.env.ROADMAP_URLS || 'https://sidrachain.com,https://ledger.sidrachain.com';
+  const rawRoadmapUrls = process.env.ROADMAP_URLS || 'https://sidrachain.com';
   const roadmapUrls = rawRoadmapUrls
     .split(',')
     .map((url) => url.trim())
