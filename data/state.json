@@ -50,7 +50,22 @@
       "https://telegram.me/sidrachaincoin/284",
       "https://telegram.me/sidrachaincoin/285",
       "https://telegram.me/sidrachaincoin/286",
-      "https://telegram.me/sidrachaincoin/287"
+      "https://telegram.me/sidrachaincoin/287",
+      "sidrachaincoin/265",
+      "sidrachaincoin/268",
+      "sidrachaincoin/270",
+      "sidrachaincoin/271",
+      "sidrachaincoin/273",
+      "sidrachaincoin/276",
+      "sidrachaincoin/277",
+      "sidrachaincoin/280",
+      "sidrachaincoin/281",
+      "sidrachaincoin/282",
+      "sidrachaincoin/283",
+      "sidrachaincoin/284",
+      "sidrachaincoin/285",
+      "sidrachaincoin/286",
+      "sidrachaincoin/287"
     ],
     "github": [
       "gh_commit_3d6fe0a7c5f47fcf2647b8498cf0bec10aaa0134",
@@ -60,7 +75,7 @@
       "gh_commit_60752f6680fe7c00a56b2869b9909c2fd7a34439"
     ]
   },
-  "lastRunTimestamp": "2026-07-14T13:42:10.193Z",
+  "lastRunTimestamp": "2026-07-14T15:12:15.135Z",
   "consecutiveFailures": {
     "nitter": 0,
     "aggregator": 0,
