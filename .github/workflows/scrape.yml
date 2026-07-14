@@ -2,10 +2,9 @@ name: Sidra Pulse Scraper & Dashboard
 
 on:
   schedule:
-    - cron: '*/15 * * * *' # Run every 15 minutes
-  workflow_dispatch:      # Allow manual triggers from the GitHub Actions tab
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
 
-# Set permissions for GITHUB_TOKEN to allow writing state file commits
 permissions:
   contents: write
 
@@ -13,22 +12,20 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: true
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
-          cache: pnpm
 
-      - name: Install pnpm
-        run: npm install -g pnpm@11.4.0
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11.4.0
+          cache: true
 
-      - name: Install dependencies
-        run: pnpm install --ignore-scripts
+      - run: pnpm install --ignore-scripts
 
       - name: Run Scraper (One-Shot)
         env:
