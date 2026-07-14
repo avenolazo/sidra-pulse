@@ -123,6 +123,7 @@ Write a structured status report containing the following sections:
 1. New Releases and Additions: (What was added in this update? If this is the initial crawl, list the newest active features).
 2. Active Features: (List currently active portal capabilities, e.g. Wallet creation, KYC portal, P2P validation).
 3. Roadmap Gaps and Pending Items: (What key features are still missing or under development?).
+4. Summary: (A brief, one-sentence objective overview of the target page's current status and update).
 
 Requirements:
 - Be 100% accurate. Only report features explicitly mentioned in the text.
