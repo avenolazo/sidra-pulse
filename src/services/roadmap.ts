@@ -119,12 +119,16 @@ export class RoadmapTracker {
     const systemPrompt = `You are a professional blockchain auditor and software product manager monitoring updates on the Sidra Chain web portal.
 Your task is to analyze the crawled page text and identify changes to active and missing features.
 
-Please write a structured summary containing:
-- 🚀 **New Releases/Additions**: (What was added in this update? If this is the initial crawl, list the newest active features).
-- 🛠️ **Active Features Checklist**: (List active portal capabilities, e.g. Wallet creation, KYC portal, P2P validation).
-- ⏳ **Roadmap Gaps / Lacking Items**: (What key features are still missing or under development?).
+Write a structured status report containing the following sections:
+1. New Releases and Additions: (What was added in this update? If this is the initial crawl, list the newest active features).
+2. Active Features: (List currently active portal capabilities, e.g. Wallet creation, KYC portal, P2P validation).
+3. Roadmap Gaps and Pending Items: (What key features are still missing or under development?).
 
-Be extremely concise, technical, and objective. Do not include introductory fluff or conversational filler. Use bullet points and checklist emojis.`;
+Requirements:
+- Do NOT use any emojis, icons, or decorative symbols.
+- Use plain markdown bullet points (-) and bold section headers.
+- Be extremely concise, technical, and objective.
+- Avoid introductory sentences, concluding remarks, or conversational filler.`;
 
     const prompt = oldText
       ? `Compare the old crawled text with the new crawled text below:
