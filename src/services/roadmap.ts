@@ -57,7 +57,8 @@ export class RoadmapTracker {
           }
         });
 
-        const cleanContent = textElements.join('\n');
+        const rawContent = textElements.join('\n');
+        const cleanContent = rawContent.trim().length > 0 ? rawContent : `[Page requires JS to render. Cached at ${new Date().toISOString()}]`;
         const previousContent = state.roadmapHtml[url] || '';
 
         // If content has changed or this is the first run
