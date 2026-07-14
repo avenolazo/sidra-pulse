@@ -79,11 +79,8 @@ export class TelegramScraper implements ScraperProvider {
         }
       });
 
-      // Limit to most recent 5 updates to avoid spam
-      const limitedUpdates = updates.slice(-5);
-      
       // Return oldest first
-      return limitedUpdates;
+      return updates;
     } catch (error) {
       logger.error(`Failed to scrape Telegram channel: ${this.channelName}`, error);
       throw error;

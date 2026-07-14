@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, ArrowUpRight } from 'lucide-react';
 
-// Import local state file
-import rawStateData from '../../data/state.json';
-
 interface ScrapedUpdate {
   id: string;
   title: string;
@@ -23,10 +20,20 @@ export default function App() {
   const [expandedIds, setExpandedIds] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    if (rawStateData) {
-      setUpdates((rawStateData.updates as ScrapedUpdate[]) || []);
-      setLastRun(rawStateData.lastRunTimestamp || '');
-    }
+    fetch('/state.json')
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch state');
+        return res.json();
+      })
+      .then((data) => {
+        if (data) {
+          setUpdates((data.updates as ScrapedUpdate[]) || []);
+          setLastRun(data.lastRunTimestamp || '');
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to dynamically fetch state.json:', err);
+      });
   }, []);
 
   const toggleExpand = (id: string) => {

@@ -22,7 +22,7 @@
       "tw_tweet_1812904"
     ]
   },
-  "lastRunTimestamp": "2026-07-14T00:50:45.216Z",
+  "lastRunTimestamp": "2026-07-14T01:03:51.028Z",
   "updates": [
     {
       "id": "tw_tweet_1812903",
@@ -49,6 +49,14 @@
       "source": "telegram"
     },
     {
+      "id": "tw_tweet_1812904",
+      "title": "Sharia-Compliant Smart Contract Gas Optimization",
+      "content": "Our dev team has successfully reduced contract gas fees by 22% during token transfer validations on the testnet. Deploying update block tomorrow.",
+      "timestamp": "2026-07-11T09:20:00.000Z",
+      "url": "https://x.com/sidrachain/status/1812904",
+      "source": "nitter"
+    },
+    {
       "id": "CBMiTkFVX3lxTE1pMjY5QzVZQzZ4OGstX1pQaXdmU3hlYXU1MUtkdUdYSWhOLUhSVFp3OUR4QTJOSTRpdHN1eVZNbS1nbzdoRVczSFBXRDcwQQ",
       "title": "Sidra Chain Explained: SDA Token, Mining, and Risks (2026) - Plisio",
       "content": "Sidra Chain Explained: SDA Token, Mining, and Risks (2026)  Plisio",
@@ -63,14 +71,6 @@
       "timestamp": "2026-02-13T16:24:47.000Z",
       "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOOWlfUzRfWFN1QWRQOVZuZ1duaGdyWk9LSVU4bk9tQUNxSkhkdV9yTnhKS2hDbkNja1dTM2E1TnZVbVdScFQxRVJRQVZlTEdnYWVmYklhelE0UlNXZXdzVWU2TnlnZ1hlMExCbmRFaEMwWTF0Wk9IQzMwWmhDM1dGcWV5aDJhQlhDQTB6aDhCdmNLTmkxZ05ZS3lXUS00TEVaXy1iU0RGNHVGeTQyNUZxYklpOW9rRTRoWWFBWjhxS0hESXJoV2JJMTd3?oc=5",
       "source": "aggregator"
-    },
-    {
-      "id": "tw_tweet_1812904",
-      "title": "Sharia-Compliant Smart Contract Gas Optimization",
-      "content": "Our dev team has successfully reduced contract gas fees by 22% during token transfer validations on the testnet. Deploying update block tomorrow.",
-      "timestamp": "2026-07-11T09:20:00.000Z",
-      "url": "https://x.com/sidrachain/status/1812904",
-      "source": "nitter"
     },
     {
       "id": "CBMiY0FVX3lxTE83aG5TTjhwR1RkSHliSE0yLUNtbFZnaVE0X0lFa0VsYlRXRER0ZTdhWmV0YUFObHgxLUZNWnFaS3Zoa0tKQVM2VFpZOWJKZl9YSmJ4WEJoakdmZEtFb2xzQ0JEdw",
