@@ -36,7 +36,8 @@
       "2023572623095972104",
       "2023572543429333024",
       "2023572489796747370",
-      "2023572424659275943"
+      "2023572424659275943",
+      "2023571230704468116"
     ],
     "telegram": [
       "https://telegram.me/sidrachaincoin/265",
@@ -78,7 +79,7 @@
       "gh_commit_60752f6680fe7c00a56b2869b9909c2fd7a34439"
     ]
   },
-  "lastRunTimestamp": "2026-07-14T21:38:44.715Z",
+  "lastRunTimestamp": "2026-07-14T22:40:06.920Z",
   "consecutiveFailures": {
     "nitter": 0,
     "aggregator": 0,
