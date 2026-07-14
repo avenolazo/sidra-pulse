@@ -125,6 +125,8 @@ Write a structured status report containing the following sections:
 3. Roadmap Gaps and Pending Items: (What key features are still missing or under development?).
 
 Requirements:
+- Be 100% accurate. Only report features explicitly mentioned in the text.
+- Do NOT assume, extrapolate, or hallucinate any details, dates, or capabilities not directly present.
 - Do NOT use any emojis, icons, or decorative symbols.
 - Use plain markdown bullet points (-) and bold section headers.
 - Be extremely concise, technical, and objective.
