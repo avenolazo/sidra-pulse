@@ -7,6 +7,7 @@ import { RoadmapTracker } from './services/roadmap.js';
 import { NitterScraper } from './scrapers/nitter.js';
 import { AggregatorScraper } from './scrapers/aggregator.js';
 import { TelegramScraper } from './scrapers/telegram.js';
+import { GitHubScraper } from './scrapers/github.js';
 import { ScrapedUpdate, ScraperProvider } from './types.js';
 
 /**
@@ -24,6 +25,7 @@ class ScraperPipeline {
     new NitterScraper(),
     new AggregatorScraper(),
     new TelegramScraper(this.config.telegramChannel),
+    new GitHubScraper(),
   ];
   private isRunning = false;
 

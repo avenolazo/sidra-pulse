@@ -1,48 +1,90 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
+import { parseStringPromise } from 'xml2js';
 import { ScrapedUpdate, ScraperProvider } from '../types.js';
 import { logger } from '../services/logger.js';
 
-/**
- * Scraper provider that fetches updates from a Twitter timeline mirrored via Nitter.
- *
- * Why: Scraping X/Twitter directly requires expensive developer API access or complex
- * headless browsers to bypass login walls. Nitter instances serve clean, static HTML,
- * which can be parsed efficiently with Axios and Cheerio.
- */
 export class NitterScraper implements ScraperProvider {
   public readonly name = 'nitter';
 
-  /**
-   * Scrapes the Sidra Chain timeline, rotating through Nitter instances if errors occur.
-   *
-   * Why: Public Nitter instances frequently experience rate limits, cloudflare challenges,
-   * or temporary downtime. Auto-rotating ensures high uptime and resilience.
-   *
-   * @param instances Array of Nitter hostnames to try in order (e.g., ['nitter.privacydev.net']).
-   * @returns List of parsed updates.
-   */
   async scrape(instances: string[]): Promise<ScrapedUpdate[]> {
     for (const instance of instances) {
       try {
         logger.info(`Attempting to scrape Nitter feed from instance: ${instance}`);
-        const updates = await this.scrapeInstance(instance);
-        logger.info(`Successfully scraped ${updates.length} updates from Nitter instance: ${instance}`);
-        return updates;
+        const updates = await this.tryScrapeInstance(instance);
+        if (updates.length > 0) {
+          logger.info(`Successfully scraped ${updates.length} updates from Nitter instance: ${instance}`);
+          return updates;
+        }
+        logger.warn(`Nitter instance ${instance} returned 0 updates. Trying fallback.`);
       } catch (error) {
         logger.warn(`Failed to scrape Nitter instance: ${instance}. Trying fallback if available.`, {
           error: error instanceof Error ? error.message : String(error),
         });
       }
     }
-
     throw new Error('All configured Nitter instances failed to respond or parse correctly.');
   }
 
-  /**
-   * Scrapes a single Nitter instance.
-   */
-  private async scrapeInstance(instance: string): Promise<ScrapedUpdate[]> {
+  private async tryScrapeInstance(instance: string): Promise<ScrapedUpdate[]> {
+    // Try RSS/Atom feed first (more stable, less likely to be blocked)
+    try {
+      const feed = await this.scrapeRSS(instance);
+      if (feed.length > 0) return feed;
+    } catch {
+      // RSS failed, fall through to HTML scraping
+    }
+
+    return this.scrapeHTML(instance);
+  }
+
+  private async scrapeRSS(instance: string): Promise<ScrapedUpdate[]> {
+    const rssUrl = `https://${instance}/sidrachain/rss`;
+
+    const response = await axios.get(rssUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'application/atom+xml, application/rss+xml, text/xml',
+      },
+      timeout: 10000,
+    });
+
+    const contentType = String(response.headers['content-type'] || '');
+    if (!contentType.includes('xml') && !contentType.includes('rss') && !contentType.includes('atom')) {
+      throw new Error('Response is not an XML/RSS feed');
+    }
+
+    const parsed = await parseStringPromise(response.data, { explicitArray: false });
+    const entries = parsed.feed?.entry || parsed.rss?.channel?.item || [];
+    const items = Array.isArray(entries) ? entries : [entries];
+
+    return items.map((item: any) => {
+      const id = item.id?._ || item.guid?._ || item.link?.href || item.link || '';
+      const title = item.title?._ || item.title || '';
+      const content = item.content?._ || item.description || item.summary?._ || title;
+      const url = item.link?.href || item.link || '';
+      const pubDate = item.published || item.updated || item.pubDate || '';
+
+      let timestamp = new Date().toISOString();
+      if (pubDate) {
+        const parsedDate = new Date(pubDate);
+        if (!isNaN(parsedDate.getTime())) {
+          timestamp = parsedDate.toISOString();
+        }
+      }
+
+      return {
+        id,
+        title: title.length > 80 ? `${title.substring(0, 77)}...` : title,
+        content: typeof content === 'string' ? content : title,
+        timestamp,
+        url: url.startsWith('http') ? url : `https://x.com/sidrachain/status/${id}`,
+        source: this.name,
+      };
+    });
+  }
+
+  private async scrapeHTML(instance: string): Promise<ScrapedUpdate[]> {
     const url = `https://${instance}/sidrachain`;
     
     const response = await axios.get(url, {
@@ -51,53 +93,42 @@ export class NitterScraper implements ScraperProvider {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.5',
       },
-      timeout: 15000, // 15-second timeout
+      timeout: 15000,
     });
 
     const $ = cheerio.load(response.data);
     const updates: ScrapedUpdate[] = [];
 
-    // Nitter timeline items are contained in timeline-item divs
     $('.timeline-item').each((_, element) => {
       try {
         const $el = $(element);
 
-        // Skip if it is a retweet header unless you specifically want retweets
         const isRetweet = $el.find('.retweet-header').length > 0;
-        if (isRetweet) {
-          return; // Skip retweets to focus only on original Sidra Chain announcements
-        }
+        if (isRetweet) return;
 
-        // Extract Tweet Content Link
         const tweetLinkEl = $el.find('.tweet-link');
         if (tweetLinkEl.length === 0) return;
 
-        const relativePath = tweetLinkEl.attr('href') || ''; // e.g., "/sidrachain/status/1789012345678#m"
+        const relativePath = tweetLinkEl.attr('href') || '';
         if (!relativePath) return;
 
-        // Parse out the Tweet ID from path
         const tweetIdMatch = relativePath.match(/\/status\/(\d+)/);
         if (!tweetIdMatch) return;
         const tweetId = tweetIdMatch[1];
 
-        // Format a direct Twitter/X link instead of Nitter mirror link for end users
         const xUrl = `https://x.com/sidrachain/status/${tweetId}`;
 
-        // Extract Content text
         const contentText = $el.find('.tweet-content').text().trim();
         if (!contentText) return;
 
-        // Generate clean title (first line of tweet up to 80 chars)
         const firstLine = contentText.split('\n')[0].trim();
         const title = firstLine.length > 80 ? `${firstLine.substring(0, 77)}...` : firstLine;
 
-        // Extract Timestamp
         const dateEl = $el.find('.tweet-date a');
-        const rawDateTitle = dateEl.attr('title') || ''; // e.g. "Jul 14, 2026 · 8:33:22 AM UTC"
+        const rawDateTitle = dateEl.attr('title') || '';
         let timestamp = new Date().toISOString();
 
         if (rawDateTitle) {
-          // Nitter title formatting: "Jul 14, 2026 · 8:33:22 AM UTC" or "Jul 14, 2026 · 8:33 AM UTC"
           const cleanDateStr = rawDateTitle.replace('·', '').replace(/\s+/g, ' ');
           const parsedDate = new Date(cleanDateStr);
           if (!isNaN(parsedDate.getTime())) {
@@ -118,7 +149,6 @@ export class NitterScraper implements ScraperProvider {
       }
     });
 
-    // Return chronological ordering (oldest first so that Discord dispatches them sequentially)
     return updates.reverse();
   }
 }

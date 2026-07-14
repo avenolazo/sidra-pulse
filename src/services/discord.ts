@@ -106,6 +106,8 @@ export class DiscordNotifier {
         return 'Binance Square Feed';
       case 'coinmarketcap':
         return 'CoinMarketCap Community';
+      case 'github':
+        return 'GitHub (Sidra-Chain)';
       default:
         return source;
     }

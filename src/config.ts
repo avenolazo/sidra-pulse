@@ -69,13 +69,13 @@ export function getAppConfig(): AppConfig {
   // Resolve path to ensure absolute referencing regardless of running context
   const stateFilePath = path.resolve(process.cwd(), rawStatePath);
 
-  const rawNitterInstances = process.env.NITTER_INSTANCES || 'nitter.cz,nitter.poast.org,nitter.no-logs.otf.gg';
+  const rawNitterInstances = process.env.NITTER_INSTANCES || 'xcancel.com,nitter.net,nitter.kavin.rocks';
   const nitterInstances = rawNitterInstances
     .split(',')
     .map((instance) => instance.trim())
     .filter((instance) => instance.length > 0);
 
-  const telegramChannel = process.env.TELEGRAM_CHANNEL || 'SidraChain_Official';
+  const telegramChannel = process.env.TELEGRAM_CHANNEL || 'sidrachaincoin';
 
   const rawRoadmapUrls = process.env.ROADMAP_URLS || 'https://sidrachain.com';
   const roadmapUrls = rawRoadmapUrls
