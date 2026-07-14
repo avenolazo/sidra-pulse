@@ -1,0 +1,51 @@
+name: Sidra Pulse Scraper
+
+on:
+  schedule:
+    - cron: '*/30 * * * *' # Run every 30 minutes
+  workflow_dispatch:      # Allow manual triggers from the GitHub Actions tab
+
+permissions:
+  contents: write         # Required to commit the updated state.json back to the repo
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true # Required for committing changes
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 11.4.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --ignore-scripts
+
+      - name: Run Scraper (One-Shot)
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          NITTER_INSTANCES: ${{ secrets.NITTER_INSTANCES || 'nitter.cz,nitter.poast.org,nitter.no-logs.otf.gg' }}
+          RUN_ONCE: 'true'
+        run: pnpm run dev
+
+      - name: Commit and Push State File
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/state.json
+          if git diff --staged --quiet; then
+            echo "No state changes detected. Skipping commit."
+          else
+            git commit -m "chore: update scraper state [skip ci]"
+            git push
+          fi
