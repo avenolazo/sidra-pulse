@@ -39,6 +39,15 @@ export default function App() {
       .finally(() => {
         setIsLoading(false);
       });
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === '/' && document.activeElement !== document.getElementById('search-input')) {
+        e.preventDefault();
+        document.getElementById('search-input')?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   const toggleExpand = (id: string) => {
@@ -90,12 +99,14 @@ export default function App() {
   });
 
   return (
-    <div className="min-h-screen bg-black text-zinc-400 flex flex-col selection:bg-zinc-800 selection:text-white">
+    <div className="relative min-h-screen bg-black text-zinc-400 flex flex-col selection:bg-zinc-800 selection:text-white overflow-x-hidden">
+      {/* Soft Ambient Radial Spotlight */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[350px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
       
-      {/* Full-Width Vercel-style Top Navbar */}
-      <nav className="w-full border-b border-zinc-900/30">
+      {/* Full-Width Glassmorphic Sticky Top Navbar */}
+      <nav className="sticky top-0 z-50 w-full backdrop-blur-md bg-black/40 border-b border-zinc-900/30">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3.5">
             <img
               src="/logo.png"
               alt="Sidra Pulse"
@@ -108,11 +119,14 @@ export default function App() {
               SIDRA PULSE
             </span>
           </div>
-          {lastRun && (
-            <span className="text-xs font-mono text-zinc-600 uppercase tracking-wider">
-              {formatTimestamp(lastRun)}
-            </span>
-          )}
+
+          <div className="flex items-center gap-6">
+            {lastRun && (
+              <span className="text-xs font-mono text-zinc-600 uppercase tracking-wider">
+                {formatTimestamp(lastRun)}
+              </span>
+            )}
+          </div>
         </div>
       </nav>
 
@@ -128,45 +142,56 @@ export default function App() {
 
         {/* Filter Controls */}
         <div className="flex flex-col gap-8 mb-16">
-          {/* Search Input */}
-          <div className="relative">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600" />
+          {/* Search Input with Keyboard Indicator and Focus Accent */}
+          <div className="relative group">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-zinc-400 transition-colors" />
             <input
+              id="search-input"
               type="text"
               placeholder="Search index..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-zinc-900/20 rounded-lg pl-10 pr-4 py-3 text-sm text-zinc-200 placeholder-zinc-700 focus:outline-none focus:bg-zinc-900/40 transition-all border-none"
+              className="w-full bg-zinc-950/40 rounded-lg pl-10 pr-12 py-3 text-sm text-zinc-200 placeholder-zinc-700 focus:outline-none focus:bg-zinc-950/80 focus:border-zinc-800 transition-all border border-zinc-900/50 focus:ring-1 focus:ring-zinc-800/40"
             />
+            <div className="absolute right-3.5 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-[10px] font-mono text-zinc-700 bg-zinc-950/60 px-1.5 py-0.5 rounded border border-zinc-900">
+              <span>/</span>
+            </div>
           </div>
 
           {/* Category Tabs & Sorting */}
           <div className="flex items-center justify-between">
-            <div className="flex flex-wrap gap-x-6 gap-y-2">
+            <div className="flex items-center gap-1 bg-zinc-950/60 p-1 rounded-lg border border-zinc-900/50">
               {[
                 { id: 'all', label: 'all' },
                 { id: 'telegram', label: 'telegram' },
                 { id: 'nitter', label: 'twitter/x' },
                 { id: 'aggregator', label: 'news' }
-              ].map(source => (
-                <button
-                  key={source.id}
-                  onClick={() => setSelectedSource(source.id)}
-                  className={`text-xs font-mono uppercase tracking-wider transition-colors ${
-                    selectedSource === source.id
-                      ? 'text-zinc-100 font-semibold'
-                      : 'text-zinc-600 hover:text-zinc-400'
-                  }`}
-                >
-                  {source.label}
-                </button>
-              ))}
+              ].map(source => {
+                const isActive = selectedSource === source.id;
+                return (
+                  <button
+                    key={source.id}
+                    onClick={() => setSelectedSource(source.id)}
+                    className="relative px-3 py-1.5 text-xs font-mono uppercase tracking-wider transition-colors duration-150 focus:outline-none rounded-md"
+                    style={{ color: isActive ? '#ffffff' : '#52525b' }}
+                  >
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeTab"
+                        className="absolute inset-0 bg-zinc-900/60 rounded-md -z-10"
+                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                    {source.label}
+                  </button>
+                );
+              })}
             </div>
             
             {/* Sorting Toggle */}
             <button
               onClick={() => setSortBy(prev => prev === 'latest' ? 'oldest' : 'latest')}
-              className="text-xs font-mono text-zinc-500 hover:text-zinc-300 transition-colors uppercase tracking-wider"
+              className="text-xs font-mono text-zinc-500 hover:text-zinc-300 transition-colors uppercase tracking-wider px-3 py-1.5 hover:bg-zinc-950/40 rounded-lg border border-transparent hover:border-zinc-900/50"
             >
               sort: {sortBy}
             </button>
@@ -203,11 +228,11 @@ export default function App() {
                 return (
                   <motion.article
                     key={update.id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.15, delay: Math.min(index * 0.02, 0.15) }}
-                    className="flex flex-col gap-3.5 group"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.2, delay: Math.min(index * 0.02, 0.15) }}
+                    className="flex flex-col gap-3.5 group p-6 -mx-6 rounded-xl border border-transparent hover:border-zinc-900/50 hover:bg-zinc-950/45 transition-all duration-300"
                   >
                     {/* Meta Header */}
                     <div className="flex items-center justify-between text-[11px] font-mono text-zinc-600 uppercase tracking-wider">
