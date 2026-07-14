@@ -47,7 +47,7 @@ export interface AppConfig {
 export function getAppConfig(): AppConfig {
   const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL || null;
   const scrapeInterval = process.env.SCRAPE_INTERVAL || '*/30 * * * *';
-  const rawStatePath = process.env.STATE_FILE_PATH || './web/public/state.json';
+  const rawStatePath = process.env.STATE_FILE_PATH || './data/state.json';
   
   // Resolve path to ensure absolute referencing regardless of running context
   const stateFilePath = path.resolve(process.cwd(), rawStatePath);

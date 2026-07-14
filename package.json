@@ -5,11 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx src/index.ts",
-    "build:scraper": "tsc",
-    "start": "node dist/index.js",
-    "dev:web": "vite",
-    "build:web": "vite build",
-    "build": "tsc && vite build"
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -18,23 +15,12 @@
     "axios": "^1.7.2",
     "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.4.5",
-    "framer-motion": "^11.2.10",
-    "lucide-react": "^0.395.0",
-    "node-cron": "^3.0.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "node-cron": "^3.0.3"
   },
   "devDependencies": {
     "@types/node": "^20.14.9",
     "@types/node-cron": "^3.0.11",
-    "@types/react": "^18.3.1",
-    "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^4.3.1",
-    "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.38",
-    "tailwindcss": "^3.4.4",
     "tsx": "^4.16.0",
-    "typescript": "^5.5.2",
-    "vite": "^5.3.1"
+    "typescript": "^5.5.2"
   }
 }

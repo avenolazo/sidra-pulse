@@ -42,7 +42,6 @@ class ScraperPipeline {
 
     try {
       const state = await this.stateManager.load();
-      const allScrapedUpdates: ScrapedUpdate[] = [];
       const newUpdatesForDiscord: ScrapedUpdate[] = [];
 
       for (const scraper of this.scrapers) {
@@ -54,9 +53,6 @@ class ScraperPipeline {
             state.consecutiveFailures = {};
           }
           state.consecutiveFailures[scraper.name] = 0;
-
-          // Collect all updates to populate the website feed
-          allScrapedUpdates.push(...scraped);
 
           const newForScraper = scraped.filter(
             (update) => !this.stateManager.isProcessed(state, scraper.name, update.id)
@@ -93,11 +89,6 @@ class ScraperPipeline {
 
       // Update global run timestamp
       state.lastRunTimestamp = new Date().toISOString();
-
-      // Add all active scraped updates to the state file
-      if (allScrapedUpdates.length > 0) {
-        this.stateManager.addUpdates(state, allScrapedUpdates);
-      }
 
       // Save state to disk
       await this.stateManager.save(state);
