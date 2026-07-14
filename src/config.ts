@@ -28,6 +28,11 @@ export interface AppConfig {
    * List of Nitter instances to query in rotation/fallback.
    */
   nitterInstances: string[];
+
+  /**
+   * The public Telegram channel name to scrape.
+   */
+  telegramChannel: string;
 }
 
 /**
@@ -47,16 +52,19 @@ export function getAppConfig(): AppConfig {
   // Resolve path to ensure absolute referencing regardless of running context
   const stateFilePath = path.resolve(process.cwd(), rawStatePath);
 
-  const rawNitterInstances = process.env.NITTER_INSTANCES || 'nitter.privacydev.net,nitter.poast.org,nitter.no-logs.otf.gg';
+  const rawNitterInstances = process.env.NITTER_INSTANCES || 'nitter.cz,nitter.poast.org,nitter.no-logs.otf.gg';
   const nitterInstances = rawNitterInstances
     .split(',')
     .map((instance) => instance.trim())
     .filter((instance) => instance.length > 0);
 
+  const telegramChannel = process.env.TELEGRAM_CHANNEL || 'SidraChain_Official';
+
   return {
     discordWebhookUrl,
     scrapeInterval,
     stateFilePath,
-    nitterInstances: nitterInstances.length > 0 ? nitterInstances : ['nitter.privacydev.net'],
+    nitterInstances: nitterInstances.length > 0 ? nitterInstances : ['nitter.cz'],
+    telegramChannel,
   };
 }

@@ -1,21 +1,32 @@
-name: Sidra Pulse Scraper
+name: Sidra Pulse Scraper & Dashboard
 
 on:
   schedule:
-    - cron: '*/30 * * * *' # Run every 30 minutes
+    - cron: '*/15 * * * *' # Run every 15 minutes
   workflow_dispatch:      # Allow manual triggers from the GitHub Actions tab
 
+# Set permissions for GITHUB_TOKEN to allow writing state file commits and deploying to GitHub Pages
 permissions:
-  contents: write         # Required to commit the updated state.json back to the repo
+  contents: write
+  pages: write
+  id-token: write
+
+# Prevent concurrent deployments
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
 
 jobs:
-  scrape:
+  scrape-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          persist-credentials: true # Required for committing changes
+          persist-credentials: true
 
       - name: Install pnpm
         uses: pnpm/action-setup@v3
@@ -35,6 +46,7 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           NITTER_INSTANCES: ${{ secrets.NITTER_INSTANCES || 'nitter.cz,nitter.poast.org,nitter.no-logs.otf.gg' }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL || 'SidraChain_Official' }}
           RUN_ONCE: 'true'
         run: pnpm run dev
 
@@ -49,3 +61,18 @@ jobs:
             git commit -m "chore: update scraper state [skip ci]"
             git push
           fi
+
+      - name: Build Web Dashboard
+        run: pnpm run build:web
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist-web
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

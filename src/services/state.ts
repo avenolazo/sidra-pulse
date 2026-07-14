@@ -45,6 +45,9 @@ export class StateManager {
       if (!parsed.processedIds) {
         parsed.processedIds = {};
       }
+      if (!parsed.updates) {
+        parsed.updates = [];
+      }
       if (!parsed.lastRunTimestamp) {
         parsed.lastRunTimestamp = new Date(0).toISOString();
       }
@@ -54,12 +57,14 @@ export class StateManager {
         logger.info('No existing state file found. Initializing empty state.', { path: this.stateFilePath });
         return {
           processedIds: {},
+          updates: [],
           lastRunTimestamp: new Date(0).toISOString(),
         };
       }
       logger.error('Failed to parse state file. Returning empty state fallback.', error);
       return {
         processedIds: {},
+        updates: [],
         lastRunTimestamp: new Date(0).toISOString(),
       };
     }
@@ -130,5 +135,33 @@ export class StateManager {
         state.processedIds[source] = ids.slice(ids.length - MAX_RETAINED_IDS_PER_SOURCE);
       }
     }
+  }
+
+  /**
+   * Appends new updates to the state, maintaining chronological ordering and limiting total entries.
+   *
+   * Why: Storing full content details allows the static React web dashboard to import and
+   * display updates in a human-readable feed, bypassing database infrastructure.
+   *
+   * @param state The active ScraperState.
+   * @param newUpdates The array of new updates to insert.
+   */
+  addUpdates(state: ScraperState, newUpdates: any[]): void {
+    if (!state.updates) {
+      state.updates = [];
+    }
+
+    const combined = [...newUpdates, ...state.updates];
+    const uniqueMap = new Map<string, any>();
+    
+    for (const update of combined) {
+      uniqueMap.set(update.id, update);
+    }
+
+    const uniqueUpdates = Array.from(uniqueMap.values());
+    uniqueUpdates.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+
+    // Capping at 100 records
+    state.updates = uniqueUpdates.slice(0, 100);
   }
 }

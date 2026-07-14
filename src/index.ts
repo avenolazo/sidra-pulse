@@ -5,6 +5,7 @@ import { StateManager } from './services/state.js';
 import { DiscordNotifier } from './services/discord.js';
 import { NitterScraper } from './scrapers/nitter.js';
 import { AggregatorScraper } from './scrapers/aggregator.js';
+import { TelegramScraper } from './scrapers/telegram.js';
 import { ScrapedUpdate, ScraperProvider } from './types.js';
 
 /**
@@ -20,6 +21,7 @@ class ScraperPipeline {
   private scrapers: ScraperProvider[] = [
     new NitterScraper(),
     new AggregatorScraper(),
+    new TelegramScraper(this.config.telegramChannel),
   ];
   private isRunning = false;
 
@@ -40,11 +42,16 @@ class ScraperPipeline {
 
     try {
       const state = await this.stateManager.load();
-      const allNewUpdates: ScrapedUpdate[] = [];
+      const allScrapedUpdates: ScrapedUpdate[] = [];
+      const newUpdatesForDiscord: ScrapedUpdate[] = [];
 
       for (const scraper of this.scrapers) {
         try {
           const scraped = await scraper.scrape(this.config.nitterInstances);
+          
+          // Collect all updates to populate the website feed
+          allScrapedUpdates.push(...scraped);
+
           const newForScraper = scraped.filter(
             (update) => !this.stateManager.isProcessed(state, scraper.name, update.id)
           );
@@ -53,7 +60,7 @@ class ScraperPipeline {
             logger.info(`Found ${newForScraper.length} new updates from source: ${scraper.name}`);
             
             for (const update of newForScraper) {
-              allNewUpdates.push(update);
+              newUpdatesForDiscord.push(update);
               this.stateManager.markAsProcessed(state, scraper.name, update.id);
             }
           } else {
@@ -67,18 +74,21 @@ class ScraperPipeline {
       // Update global run timestamp
       state.lastRunTimestamp = new Date().toISOString();
 
-      if (allNewUpdates.length > 0) {
-        // Chronological order sorting just in case
-        allNewUpdates.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+      // Add all active scraped updates to the state file
+      if (allScrapedUpdates.length > 0) {
+        this.stateManager.addUpdates(state, allScrapedUpdates);
+      }
 
-        // First save state to avoid double notifying if Discord calls fail/timeout
-        await this.stateManager.save(state);
+      // Save state to disk
+      await this.stateManager.save(state);
+
+      if (newUpdatesForDiscord.length > 0) {
+        // Chronological order sorting for notifications
+        newUpdatesForDiscord.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
         
         // Dispatch notifications
-        await this.notifier.sendUpdates(allNewUpdates);
+        await this.notifier.sendUpdates(newUpdatesForDiscord);
       } else {
-        // Just save runtime timestamp
-        await this.stateManager.save(state);
         logger.info('Pipeline finished. No new updates to notify.');
       }
     } catch (error) {

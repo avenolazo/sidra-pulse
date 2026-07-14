@@ -45,6 +45,11 @@ export interface ScraperState {
   processedIds: Record<string, string[]>;
 
   /**
+   * List of scraped updates content stored for frontend consumption.
+   */
+  updates: ScrapedUpdate[];
+
+  /**
    * Timestamp of the last run.
    */
   lastRunTimestamp: string;
