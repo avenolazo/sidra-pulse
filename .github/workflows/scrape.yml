@@ -34,8 +34,8 @@ jobs:
           ROADMAP_WEBHOOK_URL: ${{ secrets.ROADMAP_WEBHOOK_URL }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           ROADMAP_URLS: ${{ secrets.ROADMAP_URLS || 'https://sidrachain.com' }}
-          NITTER_INSTANCES: ${{ secrets.NITTER_INSTANCES || 'nitter.cz,nitter.poast.org,nitter.no-logs.otf.gg' }}
-          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL || 'SidraChain_Official' }}
+          NITTER_INSTANCES: ${{ secrets.NITTER_INSTANCES || 'xcancel.com,nitter.net,nitter.kavin.rocks' }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL || 'sidrachaincoin' }}
           RUN_ONCE: 'true'
         run: pnpm run dev
 
