@@ -22,7 +22,9 @@ Automated headless web scraper and Discord notification pipeline for Sidra Chain
    ```
 
    Key options:
-   - `DISCORD_WEBHOOK_URL`: Your Discord webhook endpoint.
+   - `DISCORD_WEBHOOK_URL`: Your main updates channel Discord webhook endpoint.
+   - `ROADMAP_WEBHOOK_URL`: Discord webhook for high-value roadmap and feature updates.
+   - `GEMINI_API_KEY`: (Optional) Google Gemini API Key to automatically generate AI summary change diffs.
    - `SCRAPE_INTERVAL`: Cron pattern (e.g. `*/5 * * * *` for every 5 minutes).
 
 3. **Build & Run**:
@@ -44,4 +46,6 @@ A workflow is configured in `.github/workflows/scrape.yml` to run the scraper ev
 
 ### Required Setup:
 Go to your GitHub repository **Settings** -> **Secrets and variables** -> **Actions** and add:
-- `DISCORD_WEBHOOK_URL`: Your Discord channel webhook.
+- `DISCORD_WEBHOOK_URL`: Your Discord updates channel webhook.
+- `ROADMAP_WEBHOOK_URL`: Your Discord roadmap channel webhook.
+- `GEMINI_API_KEY`: (Optional) Your Google Gemini API Key for automated diff digests.

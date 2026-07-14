@@ -3,6 +3,7 @@ import { getAppConfig } from './config.js';
 import { logger } from './services/logger.js';
 import { StateManager } from './services/state.js';
 import { DiscordNotifier } from './services/discord.js';
+import { RoadmapTracker } from './services/roadmap.js';
 import { NitterScraper } from './scrapers/nitter.js';
 import { AggregatorScraper } from './scrapers/aggregator.js';
 import { TelegramScraper } from './scrapers/telegram.js';
@@ -18,6 +19,7 @@ class ScraperPipeline {
   private config = getAppConfig();
   private stateManager = new StateManager(this.config.stateFilePath);
   private notifier = new DiscordNotifier(this.config.discordWebhookUrl);
+  private roadmapTracker = new RoadmapTracker(this.config);
   private scrapers: ScraperProvider[] = [
     new NitterScraper(),
     new AggregatorScraper(),
@@ -86,6 +88,9 @@ class ScraperPipeline {
           }
         }
       }
+
+      // Run roadmap and capability update check
+      await this.roadmapTracker.checkUpdates(state);
 
       // Update global run timestamp
       state.lastRunTimestamp = new Date().toISOString();

@@ -33,6 +33,21 @@ export interface AppConfig {
    * The public Telegram channel name to scrape.
    */
   telegramChannel: string;
+
+  /**
+   * Discord webhook URL to send roadmap/feature status alerts.
+   */
+  roadmapWebhookUrl: string | null;
+
+  /**
+   * Google Gemini API key to automatically analyze landing page diffs.
+   */
+  geminiApiKey: string | null;
+
+  /**
+   * List of target ecosystem URLs to monitor for active capabilities.
+   */
+  roadmapUrls: string[];
 }
 
 /**
@@ -46,6 +61,8 @@ export interface AppConfig {
  */
 export function getAppConfig(): AppConfig {
   const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL || null;
+  const roadmapWebhookUrl = process.env.ROADMAP_WEBHOOK_URL || null;
+  const geminiApiKey = process.env.GEMINI_API_KEY || null;
   const scrapeInterval = process.env.SCRAPE_INTERVAL || '*/30 * * * *';
   const rawStatePath = process.env.STATE_FILE_PATH || './data/state.json';
   
@@ -60,11 +77,20 @@ export function getAppConfig(): AppConfig {
 
   const telegramChannel = process.env.TELEGRAM_CHANNEL || 'SidraChain_Official';
 
+  const rawRoadmapUrls = process.env.ROADMAP_URLS || 'https://sidrachain.com';
+  const roadmapUrls = rawRoadmapUrls
+    .split(',')
+    .map((url) => url.trim())
+    .filter((url) => url.length > 0);
+
   return {
     discordWebhookUrl,
+    roadmapWebhookUrl,
+    geminiApiKey,
     scrapeInterval,
     stateFilePath,
     nitterInstances: nitterInstances.length > 0 ? nitterInstances : ['nitter.cz'],
     telegramChannel,
+    roadmapUrls,
   };
 }

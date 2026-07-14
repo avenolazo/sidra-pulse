@@ -53,6 +53,11 @@ export interface ScraperState {
    * Track consecutive execution failures per source name.
    */
   consecutiveFailures?: Record<string, number>;
+
+  /**
+   * Cached content of tracked pages to detect changes in the ecosystem roadmap.
+   */
+  roadmapHtml?: Record<string, string>;
 }
 
 /**

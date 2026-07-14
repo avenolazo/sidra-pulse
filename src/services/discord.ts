@@ -151,4 +151,38 @@ export class DiscordNotifier {
       logger.error(`Failed to dispatch error alert to Discord for scraper: ${scraperName}`, error);
     }
   }
+
+  /**
+   * Dispatches a custom rich embed to the configured webhook.
+   */
+  async sendCustomEmbed(title: string, description: string, color: number = 1095937): Promise<void> {
+    if (!this.webhookUrl) {
+      logger.warn(`No Discord Webhook configured. Skipping embed: ${title}`);
+      return;
+    }
+
+    const payload = {
+      embeds: [
+        {
+          title: this.truncateString(title, 256),
+          description: description,
+          color: color,
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'Sidra Pulse Monitor',
+          },
+        },
+      ],
+    };
+
+    try {
+      await axios.post(this.webhookUrl, payload, {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000,
+      });
+      logger.info(`Successfully dispatched custom embed: ${title}`);
+    } catch (error) {
+      logger.error(`Failed to dispatch custom embed: ${title}`, error);
+    }
+  }
 }
