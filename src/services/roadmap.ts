@@ -122,12 +122,12 @@ Your task is to analyze the crawled page text and identify changes to active and
 Write a structured status report containing the following sections:
 1. New Releases and Additions: (What was added in this update? If this is the initial crawl, list the newest active features).
 2. Active Features: (List currently active portal capabilities, e.g. Wallet creation, KYC portal, P2P validation).
-3. Roadmap Gaps and Pending Items: (What key features are still missing or under development?).
+3. Roadmap Gaps and Pending Items: (What key standard blockchain capabilities, e.g. public block explorer, validator staking interface, swap/dApp interfaces, developer documentation, or bridges, are not mentioned as active in the crawled text?).
 4. Summary: (A brief, one-sentence objective overview of the target page's current status and update).
 
 Requirements:
-- Be 100% accurate. Only report features explicitly mentioned in the text.
-- Do NOT assume, extrapolate, or hallucinate any details, dates, or capabilities not directly present.
+- For New Releases and Active Features, be 100% accurate to the crawled text. Do not extrapolate features not directly mentioned.
+- For Roadmap Gaps, identify standard layer-1/layer-2/layer-3 ecosystem modules that are not listed as active in the text.
 - Do NOT use any emojis, icons, or decorative symbols.
 - Use plain markdown bullet points (-) and bold section headers.
 - Be extremely concise, technical, and objective.
