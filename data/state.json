@@ -101,7 +101,8 @@
       "sidrachaincoin/284",
       "sidrachaincoin/285",
       "sidrachaincoin/286",
-      "sidrachaincoin/287"
+      "sidrachaincoin/287",
+      "sidrachaincoin/288"
     ],
     "github": [
       "gh_commit_3d6fe0a7c5f47fcf2647b8498cf0bec10aaa0134",
@@ -111,7 +112,7 @@
       "gh_commit_60752f6680fe7c00a56b2869b9909c2fd7a34439"
     ]
   },
-  "lastRunTimestamp": "2026-08-05T13:13:43.125Z",
+  "lastRunTimestamp": "2026-08-05T15:30:27.512Z",
   "consecutiveFailures": {
     "nitter": 0,
     "aggregator": 0,
