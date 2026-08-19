@@ -147,11 +147,11 @@
       "gh_commit_60752f6680fe7c00a56b2869b9909c2fd7a34439"
     ]
   },
-  "lastRunTimestamp": "2026-08-19T13:32:27.313Z",
+  "lastRunTimestamp": "2026-08-19T14:17:45.667Z",
   "consecutiveFailures": {
-    "nitter": 1,
+    "nitter": 2,
     "aggregator": 0,
-    "telegram": 1,
+    "telegram": 0,
     "github": 0
   },
   "roadmapHtml": {
