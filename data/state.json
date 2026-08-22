@@ -150,9 +150,9 @@
       "gh_commit_60752f6680fe7c00a56b2869b9909c2fd7a34439"
     ]
   },
-  "lastRunTimestamp": "2026-08-22T07:55:07.624Z",
+  "lastRunTimestamp": "2026-08-22T08:28:33.220Z",
   "consecutiveFailures": {
-    "nitter": 66,
+    "nitter": 67,
     "aggregator": 0,
     "telegram": 0,
     "github": 0
