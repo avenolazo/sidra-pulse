@@ -1,8 +1,6 @@
 {
   "processedIds": {
     "aggregator": [
-      "CBMiZEFVX3lxTE1NV2JudVFYYjNOZE5mSG1zNzY5SXZnNVRWbmJ1b1ZqUGJqQllrSlVHcXpaMEFvQ0hRWUo0VGFMdGJncDE4Wmd2V0p0Q2kwWF9JYVNkbmF3cXRDZm5haENIOFdsNWk",
-      "CBMiY0FVX3lxTE4zaGVWODU0aUpwVGNEc2gtZHIweFl1QUpVMVNTV0VwN1dRUVJBUWZtWWNQeGdzMWJlRjJ6ZTdSWHpyM25ZcGw5bHVWMUZZRDNRWjFxUTlTSXc1djZEM2lqdjNiVQ",
       "CBMiW0FVX3lxTFA4bkpjejUyVmFQLWtYdU91STVXczBJSVFmSFUyby1SbWtwYWFnaC0tTllsMENiemYwMi05bTZsckd4S24wTGhqQVlFYlQteEE1ci1oV1M2OUhFZnM",
       "CBMiYkFVX3lxTE1yR0Ixejg5R0lzYm5RZE9sdFd3b1VHWGRFemR3YXN4SzVGa0RocU1wQklzcTJDT0h2ZjN5VHBGNjJhSnBXbWtZTzRhaWg5ZlZyUGVJcC1sbnhoajZuMS1aendR",
       "CBMitAFBVV95cUxPcG95WFB6YWJvNW02WDdtU3A4XzFTNjNLaTBXM0lMNGZQcHpscHhxcXFzX1d1YmVmN0dES3hmcEdJMC16eFNXcFdQbTExSEViYnc3X2V0cmJSNGpxSFJJVnEwWnEtQWtudWZDZWd1QU4yUldZdzF6bEJnakJubXdfLVQ3TmhQZVAwbE1KY1o2Z3ZJUU41VVQweU5zWEY5bno4dTB0N0hwblo0ZHJrbTd1MUtHSy3SAboBQVVfeXFMTmVhbkcxVWZoTnpTMEVjOUlFVDR3U2l4UndSc2liQjcyOHJQZThZTG11aTdxMEJSb2RYbURqSUZtaTMyRmRaWTJFM2lTNzM2bkNUeEFoRzFHRzNjMDI3dWZxWDRHOGY2TU8tY1Vqd0tJaFZjTnJaZnZTeXZmV0RnY0FJeHl1N25ia19DbGpLd0NrMjZUMzVlVWxtSUs5UHZXa1N6bUdfVTdTY3BlTEJEV3d5Y0NpaXhncEZR",
@@ -100,7 +98,9 @@
       "CBMisgFBVV95cUxQb0x3eXhPa3A3NjRYNzBVcXdtNnlhRnpla2xHdmdWbFFLSHhBdEk5SHZqWUhReDFGeldlcTBFcDkwVnJuMlVtdjNVVVNZUVZ0dWVmUTJVcjJ3Y0lTV2pUcFNiZF9lU05kRzRpaTJ1cVF4ZF9TQzBheUgtN1FWSVNhQURUS2U0RUZ3UXFDZDItb2RnSkdWb3VTd0dwSDZBMGRQRGk1Mmdia0RfcHc0RGRpd2JB0gG3AUFVX3lxTE53UXg5QS1va1JXWUNLMWZNS3RULUdSbXpFdjJQcGhDcDlqMVJCNldtb18wRlh0S1JfT0pUdHNwbnlfUnpIWTI4ZWtkYnphdUEzMTdQY2VFbmxmVEJ4Zk1GdjM5TUZEV0d2ZkFXOFR0ay1DbjdoMk1iSW0yUklCQjN4TzR3S0dDWFhteElNcC0zbEhqaUEtMG9pM04wRHNHNVg4dGZ6OFFqTTUtNmY3blpLU2tpczJ2OA",
       "CBMi2wFBVV95cUxONjdnaFlpZjJGaVd3cVExNEVSR0VvZTRDUWhHMzVwYjFrdHpIT2pEbHVnUlZUdldJUHlWcjk5RkV4TVBhbFlPZWlIMllZMkw4TG1UVlJwT0ZPdDE3dHhYSDhJV3gxZm1nNlRncVBOMExHZDVhWEZGN3Y3ZElPXzdqSmpnd2ljM3AzV2o3QXhxbGpUTkNIMU5nZ3E4MWpkR3hWNUliNGlTdUxENmd0UW1kallHUzVmNEU4ekptNWZXUU5hTl9yT2ZENnY4eWJGYUlxQ2VacTc1MTZ5ckE",
       "CBMizAFBVV95cUxNbnB0Y2p1R2M5cmItVnZLXzIteHJOQ1hsbngweTlUa01zMV9wNlVRa0U5QlY5TzVXcEpBcWtFbFhoTFNKSjZoa29CMWpGOFFxQ1pxZjhwYzJkVS1yeEJfQ3o2UHdMQTRnV0N6SDI0ZEswblk3VE9fcUtDX2tWWVhVYVpPTndFRU5fSmlpanlrLVdXbENaN1JyREpicTVqeUFUWFZrN25ld2JrRHJrM2NvbXY5YTB4YTNIOVFkOTY2UlA3eWlpZnFQckhpM0M",
-      "CBMi7wFBVV95cUxOLUJUM2tJbl9WelBQamJzY3pKa0JfandGTTFhREhhbl9ZU1VqSkM5N05GVXZ0dEt2T1c2Z3lXUFFpdFJteTM1SjBJTDdtOWVwU2thWG41SWI2bHJLSlM1dVRKeUd6M1Vod0tpM282MUNRRDg1THNmZzI2dllXcWRzVjYxdTdlamRrZDlGbVJDNmdwSGg3RVJETlVBdWViNnBFaEdXRk5zX2ZfR2JsRE9aS09EMUNfTGVzY0xORzBhOG9VaHRjOXVFbnpSQVNfODFzZUUyOEpucUxVRjBPdkFkZm4zbVFiWnM4ZXFWYVBOVdIB9AFBVV95cUxOSFg5X2pDT0FwN0JmSjlRZVU4Sld5RnY2NVlRQUo2aDQ2bkhIN2Vja243VnJ6YWoxYWtHa3BtWUp2NEFhQzNYQXBrUlNiMmgtZ2ZYS1VIcmRRcm11VnlLQTY2Zno0VmVTc3p1Y0J0cjI0UDJhT2hfWlBfX3FvcGV1Y3V3VkdWek1WOXVQazluSTNfeDBVb2FraHB4VGlPazh4VkdINzVqUWRKSzI0cnU1bDZKbzM5MVpjOGJ1Y3A2LUpsSEpqSmNLendMMGphZV9vNS1Ia1cyQl8wVTlIdjNFSDA0a3J6MkhEbmJoaVB4OUxBSFFz"
+      "CBMi7wFBVV95cUxOLUJUM2tJbl9WelBQamJzY3pKa0JfandGTTFhREhhbl9ZU1VqSkM5N05GVXZ0dEt2T1c2Z3lXUFFpdFJteTM1SjBJTDdtOWVwU2thWG41SWI2bHJLSlM1dVRKeUd6M1Vod0tpM282MUNRRDg1THNmZzI2dllXcWRzVjYxdTdlamRrZDlGbVJDNmdwSGg3RVJETlVBdWViNnBFaEdXRk5zX2ZfR2JsRE9aS09EMUNfTGVzY0xORzBhOG9VaHRjOXVFbnpSQVNfODFzZUUyOEpucUxVRjBPdkFkZm4zbVFiWnM4ZXFWYVBOVdIB9AFBVV95cUxOSFg5X2pDT0FwN0JmSjlRZVU4Sld5RnY2NVlRQUo2aDQ2bkhIN2Vja243VnJ6YWoxYWtHa3BtWUp2NEFhQzNYQXBrUlNiMmgtZ2ZYS1VIcmRRcm11VnlLQTY2Zno0VmVTc3p1Y0J0cjI0UDJhT2hfWlBfX3FvcGV1Y3V3VkdWek1WOXVQazluSTNfeDBVb2FraHB4VGlPazh4VkdINzVqUWRKSzI0cnU1bDZKbzM5MVpjOGJ1Y3A2LUpsSEpqSmNLendMMGphZV9vNS1Ia1cyQl8wVTlIdjNFSDA0a3J6MkhEbmJoaVB4OUxBSFFz",
+      "CBMimAFBVV95cUxQWVh0dnE0UXZ6dXU1Y2Y4TTBPZGVyUzFKMXdKQ0xOb2QwY1Jla2JIU19iMlRMeUwtZGo4XzFPMHZGdGJ0QlFBeHpHT0dxWDR6YS10WUFhZGRTN0k4aXBfSEd2cVdoejQ1eVB5Xy1sNThvTHZFVEV4ZXlIY1E1MHlzOWZjU0M4TFJSbndFbDQzT3VzWGRfOEw5NQ",
+      "CBMitwFBVV95cUxOWlpYVU1CaWxGX0xLaHhZNDlaUTRnRnJheDA3SWdNQkI4dEhKa2plaHNFQ3Q3eUJaQzM5TmktOTlMbXEydHhkTVhhRVo3OFQ0MW9uRXc4YXVDQjZRLTQ3NzYtcjNLNDN6TU5zaXpzazRtLVBzSE5lYlRFRUVmZ0tkMGdaQlh2QW9za0UxY0tPZmV5akhoRnY4cnRVemNES0RGaVZVcGlGY19SOEdjVEg1RmQzR3Bncjg"
     ],
     "nitter": [
       "2062664079672496476",
@@ -167,14 +167,14 @@
       "gh_commit_60752f6680fe7c00a56b2869b9909c2fd7a34439"
     ]
   },
-  "lastRunTimestamp": "2026-09-23T23:11:19.611Z",
+  "lastRunTimestamp": "2026-09-24T01:24:54.408Z",
   "consecutiveFailures": {
-    "nitter": 399,
+    "nitter": 400,
     "aggregator": 0,
     "telegram": 0,
     "github": 0
   },
   "roadmapHtml": {
-    "https://sidrachain.com": "Sidra Chain\nA verified-human financial network\nOne verified human. One account.\nSidra is a verified-human financial network — claim daily rewards, hold a real ledger balance, and settle on a self-hosted chain. No seed phrases. No silent failures.\nGet started\nI already have an account\nProof of personhood\nPassive liveness + KYCPort verification. One human, one account — sybil-resistant by design.\nA real ledger\nDouble-entry balances are the source of truth. Settlement on a self-hosted EVM chain — your balance is never a silent zero.\nSmart-account wallet\nERC-4337 accounts: no seed phrase, gasless transactions, social recovery via guardians.\nTokenized assets\nPermissioned real-world assets on the L3 layer, with on-chain identity and compliance built in."
+    "https://sidrachain.com": "Sidra Chain\nHelpOpens in a new tab\nA verified-human financial network\nOne verified human. One account.\nSidra is a verified-human financial network — claim daily rewards, hold a real ledger balance, and settle on a self-hosted chain. No seed phrases. No silent failures.\nGet started\nI already have an account\nProof of personhood\nPassive liveness + KYCPort verification. One human, one account — sybil-resistant by design.\nA real ledger\nDouble-entry balances are the source of truth. Settlement on a self-hosted EVM chain — your balance is never a silent zero.\nSmart-account wallet\nERC-4337 accounts: no seed phrase, gasless transactions, social recovery via guardians.\nTokenized assets\nPermissioned real-world assets on the L3 layer, with on-chain identity and compliance built in."
   }
 }
